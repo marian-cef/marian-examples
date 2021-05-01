@@ -1,0 +1,2 @@
+stanza==1.2
+subword-nmt==0.3.7
