@@ -109,7 +109,7 @@ def annotate(source, matches, factor_prefix):
 
     Ex I|p0 bought|p0 a|p0 car|p1 carro|p2
     '''
-    matches = sorted(matches, key=lambda match: match[0], reverse=True)
+    matches = sorted(matches, key=lambda match: match[1], reverse=True)
     source = [word + '|%s0' % factor_prefix for word in source]
     for match in matches:
         source_term_gram, source_start, target_term_gram = match
