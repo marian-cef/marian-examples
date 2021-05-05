@@ -5,7 +5,7 @@ This repository aims to give a walkthrough on how to train an end-to-end pipelin
 This milestone aims to support users in improving translation quality by injecting translations from their own bilingual terminology dictionaries. To expand coverage and support morphologically rich languages, it also supports inflecting entries in the bilingual terminology dictionary.
 
 We followed the approach taken in the following paper:<br/>
-T. Bergmanis and M. Pinnis.  *Facilitating terminology translation with target lemma annotations.*  InProceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics:  Main  Volume,  pages  3105–3111,  Online,  Apr.  2021.  Association  for  Computational Linguistics. (https://www.aclweb.org/anthology/2021.eacl-main.271).
+> T. Bergmanis and M. Pinnis.  *Facilitating terminology translation with target lemma annotations.*  InProceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics:  Main  Volume,  pages  3105–3111,  Online,  Apr.  2021.  Association  for  Computational Linguistics. (https://www.aclweb.org/anthology/2021.eacl-main.271).
 
 All information about the experiments that we ran with the code provided in this repository, which data to use to reproduce them and the results can be found in the [docs](docs/Experiments.md) folder.<br/>
 The details regarding the technique used to be able to do forced translation are detailed in the paper cited above.
