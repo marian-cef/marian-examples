@@ -22,10 +22,3 @@ cut -f 1 test > test.en
 cut -f 2 test > test.pt
 
 rm shuffled_corpus valid test training en-pt.txt.zip Europarl.en-pt.en Europarl.en-pt.pt
-
-
-
-
-
-
-
