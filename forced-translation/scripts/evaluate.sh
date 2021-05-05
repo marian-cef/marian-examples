@@ -24,17 +24,13 @@ test -z $prefix && { echo "Missing Argument: file prefix needed (option -p)"; ex
 test -e $DATA/$prefix.$SRC_LANG || { echo "Error: $DATA/$prefix.$SRC_LANG file not found."; exit 1; }
 test -e $DATA/$prefix.$TGT_LANG || { echo "Error: $DATA/$prefix.$TGT_LANG file not found."; exit 1; }
 
-# Posprocessing steps (debpe, detruecase, deescape special carachters, detokenize)
-cat $DATA/$prefix.hyps.$TGT_LANG | sed 's/@@ //g' > $DATA/$prefix.hyps.debpe.$TGT_LANG
 
-cat $DATA/$prefix.hyps.debpe.$TGT_LANG | $MOSES/scripts/recaser/detruecase.perl \
-    | sed -e 's/\&htg;/#/g' \
-          -e 's/\&cln;/:/g' \
-          -e 's/\&usc;/_/g' \
-          -e 's/\&ppe;/|/g' \
-          -e 's/\&esc;/\\/g' \
-    | $MOSES/scripts/tokenizer/detokenizer.perl -l $TGT_LANG \
-    > $DATA/$prefix.hyps.debpe.detok.$TGT_LANG
+# Evaluation steps (Lemmatized Glossary Accuracy and BLEU)
+python $SCRIPTS/eval_lemmatized_glossary.py -s $DATA/$TEST_PREFIX.tok.fact.$SRC_LANG -tl $TGT_LANG -hyps $DATA/$TEST_PREFIX.hyps.debpe.$TGT_LANG > $DATA/lemmatized_gloss_acc_score
+cat $DATA/$TEST_PREFIX.hyps.debpe.detok.$TGT_LANG | sacrebleu $DATA/$TEST_PREFIX.$TGT_LANG > $DATA/bleu_score
+
+cat $DATA/lemmatized_gloss_acc_score
+cat $DATA/bleu_score
 
 # Exit success
 exit 0

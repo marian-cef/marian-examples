@@ -44,7 +44,7 @@ This scripts runs in two different modes. If executing without the `--test` opti
 
 To run the script do:
 ```
-python add_glossary_annotations.py -s path/to/source_file -t path/to/target_lemmatized_file -o path/to/output_file -g path/to/glossary_file --test
+python add_glossary_annotations.py -s path/to/source_tokenized_file -t path/to/target_tokenized_file -o path/to/output_file -g path/to/glossary_file --test
 ```
 
 ## [create_factored_vocab.sh](create_factored_vocab.sh)
@@ -67,13 +67,21 @@ We also expect that when creating the vocab you have escaped in the corpus the s
 
 ## [transfer_factors_to_bpe.py](transfer_factors_to_bpe.py)
 
-This script extends the BPE splits to the factored text. Given that we need to apply the factors prior to applying the BPE, and we subsequentillyneed to extend the splits to the factored corpus. For example, if you annotate the sentence "`I|p0 live|p0 in|p0 Germany|p1 Deutschland|p2 .|p0`", and after applying BPE you get "`I live in Port@@ ugal Port@@ ugal .`", you want the final format of the sentence to be: "`I|p0 live|p0 in|p0 Ger@@|p1 many|p1 Deutsch@@|p2 land|p2 .|p0`".
+This script extends the BPE splits to the factored text. Given that we need to apply the factors prior to applying the BPE, and we subsequentillyneed to extend the splits to the factored corpus. For example, if you annotate the sentence "`I|p0 live|p0 in|p0 Germany|p1 Deutschland|p2 .|p0`", and after applying BPE you get "`I live in Ger@@ many Deutsch@@ land .`", you want the final format of the sentence to be: "`I|p0 live|p0 in|p0 Ger@@|p1 many|p1 Deutsch@@|p2 land|p2 .|p0`".
 
 To run it do:
 ```
 python transfer_factors_to_bpe.py --factored_corpus path/to/factored_file --bpe_corpus path/to/bpeed_file --output_file path/to/output_file
 ```
 
+## [eval_lemmatized_glossary.py](eval_lemmatized_glossary.py)
+
+This script receives two files, the annotated file with the glossary terms and the factors, and the depeed hypothesis, and calculates the lemmatized term exact match accuracy. To do so, it lemmatizes the hypothesis of the system and lemmatizes the annotated glossary terms in the source and counts the percentage of the lemmatized annotated target glossaries that appeared correctly in the lemmatized target hypothesis.
+To run it do:
+```
+python scripts/eval_lemmatized_glossary.py -s path/to/factored_file -tl target_lang_id -hyps path/to/debpeed_hypothesis
+```
+
 ## Other scripts
 
-The scripts `preprocess_train.sh`, `preprocess_test.sh` and `postprocess.sh` implement preprocess and postprocess tasks to execute the end-to-end pipeline and are only for code organization purposes. They are meant to be executed via the top level script `run-me.sh` in the main repo root and not run standalone.
+The scripts `preprocess_train.sh`, `preprocess_test.sh`, `postprocess.sh` and `evaluate.sh` implement preprocess, postprocess and evaluation tasks to execute the end-to-end pipeline and are only for code organization purposes. They are meant to be executed via the top level script `run-me.sh` in the main repo root and not run standalone.

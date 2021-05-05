@@ -101,5 +101,10 @@ echo "Postprocessing test data..."
 $SCRIPTS/postprocess.sh -p $TEST_PREFIX
 
 
+# Evaluate test data
+echo "Evaluating test data..."
+$SCRIPTS/evaluate.sh -p $TEST_PREFIX
+
+
 # exit success
 exit 0
