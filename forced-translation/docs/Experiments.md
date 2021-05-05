@@ -3,7 +3,7 @@
 In this file we will explain and describe the experiments that we conducted to validate the use of the implemented forced translation technique.
 
 This was inspired by:<br>
-T. Bergmanis and M. Pinnis.  *Facilitating terminology translation with target lemma annotations.*  InProceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics:  Main  Volume,  pages  3105–3111,  Online,  Apr.  2021.  Association  for  Computational Linguistics. (https://www.aclweb.org/anthology/2021.eacl-main.271).
+> T. Bergmanis and M. Pinnis.  *Facilitating terminology translation with target lemma annotations.*  InProceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics:  Main  Volume,  pages  3105–3111,  Online,  Apr.  2021.  Association  for  Computational Linguistics. (https://www.aclweb.org/anthology/2021.eacl-main.271).
 
 A description of all the steps of the pipeline can be found [here](./Pipeline.md).
 
