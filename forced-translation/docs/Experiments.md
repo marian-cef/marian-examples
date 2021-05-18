@@ -18,7 +18,7 @@ We ran experiments for four language pairs:
 We gathered our corpora by merging several datasets from the [OPUS](https://opus.nlpl.eu/index.php) corpus bank. 
 We applied some cleaning to the corpus where we removed duplicated and empty lines and lines that were the same between source and target. 
 The validation set used was a subset of the corpus excluded from the training set for all the language pairs, except en-lv where we used the newstest from [2017 WMT](http://www.statmt.org/wmt17/translation-task.html). 
-The testset for en-de and en-lv was the ATS test set mentioned in the paper cited above and available [here](https://github.com/tilde-nlp/terminology_translation). For the two remaining LPs, en-ro and en-no, the test set was also a subset of the original corpus excluded from the training and validation set.
+The testset for en-de and en-lv was the ATS test set mentioned in the paper cited above and available [here](https://github.com/tilde-nlp/terminology_translation). For the two remaining LPs, en-ro and en-no, in order to have a testset specific to a certain domain, we selected 800 lines from the [europarl corpus](https://opus.nlpl.eu/Europarl.php) for en-ro and 800 lines from the [Tilde MODEL - EMEA](https://tilde-model.s3-eu-west-1.amazonaws.com/Tilde_MODEL_Corpus.html) corpus for en-no, creating this way a testset specific to politics and to medicine respectively.
 
 This resulted in the following data distribution (number of lines):
 
@@ -26,12 +26,12 @@ This resulted in the following data distribution (number of lines):
 | :-----------: |:--------:| :---: | :--: |
 | en-de         | 73,246,285 | 2,000  | 767  |
 | en-lv         | 11,496,869 | 2,003  | 767  |
-| en-nb         | 12,737,978 | 2,000  | 2,000 |
-| en-ro         | 14,560,839 | 2,000  | 2,000 |
+| en-nb         | 12,737,978 | 2,000  | 800 |
+| en-ro         | 14,560,839 | 2,000  | 800 |
 
 If you look at both the paper and the [pipeline description](./Pipeline.md) you can see that any glossary is used during training by this method, and it only uses glossasries during the inference. 
 
-For the en-nb and en-ro language pairs we used the [IATE](https://iate.europa.eu/home) generic glossaries, and for en-de and en-lv we used the [ATS](https://github.com/tilde-nlp/terminology_translation) glossaries, also used in Tilde's paper.
+For en-de and en-lv we used the [ATS](https://github.com/tilde-nlp/terminology_translation) glossaries, also used in Tilde's paper. For the en-ro language pair we used the [IATE](https://iate.europa.eu/home) generic glossary, filtered by the domains related to the content of the created testset based on europarl (Poltics, International relations, European Union, Economics, etc.). For the en-nb language pair we use a glossary from [eurotermbank](https://www.eurotermbank.com/collections/49), that has entries related to medicine, to match the EMEA based testset domain.
 
 During training this was the amount of annotated data with the target lemmas:
 
@@ -45,8 +45,8 @@ Also some statistics regarding the annotations on the testsets with the glossary
 
 + **en-de**:  Annotated 61.80% lines with a total of 694 matches (1.62 matches per line).
 + **en-lv**:  Annotated 57.50% lines with a total of 647 matches (1.74 matches per line).
-+ **en-nb**:  Annotated 49.75% lines with a total of 1,928 matches (1.94 matches per line).
-+ **en-ro**:  Annotated 59.15% lines with a total of 2,592 matches (2.19 matches per line).
++ **en-nb**:  Annotated 65.25% lines with a total of 631 matches (1.21 matches per line).
++ **en-ro**:  Annotated 58.62% lines with a total of 491 matches (1.05 matches per line).
 
 ## Training
 
@@ -56,19 +56,17 @@ All the training parameters and marian configuration options were exactly the sa
 
 ### Automatic metrics
 
-In the following table you can see the results obtained, evaluated on the lines of the testsets that had glossary term matches.
-
 We evaluated based on [BLEU](https://www.aclweb.org/anthology/P02-1040.pdf) and [COMET](https://github.com/Unbabel/COMET), and we used the `wmt-large-da-estimator-1719` model for the latter.
-Regarding the terminology accuracy, we used lemmatized term exact match accuracy to measure if the system chooses the correct lexemes. 
+Regarding the terminology accuracy, we used lemmatized term exact match accuracy to measure if the system chooses the correct lexemes.
 To obtain these, we lemmatized the hypothesis of the systems and lemmatized the glossary (both the source and the target side) and counted the percentage of the lemmatized target glossaries that appeared correctly in the lemmatized target hypothesis.
 
 | Lang. Pair |  BLEU   |  BLEU |   COMET | COMET | Acc. [%]  | Acc. [%]
 | :-----------: |:--------:| :---: | :--: | :--: |:--: |:--: |
 |        | Baseline | Fact. Model  | Baseline | Fact. Model  |Baseline | Fact. Model  |
-| en-de         | 22.609 | **28.03**  | 0.392  |**0.656**  |53.03  |**95.53**  |
-| en-lv         | 20.885 | **27.485**  |0.61  |**0.814**  |52.07  |**86.86**  |
-| en-nb         | **39.704** | 34.928  | **0.638** |0.457  |31.9 |**61.72** |
-| en-ro         | 24.341 | **25.222**  | **0.348** |0.327  |41.63  |**74.04**  |
+| en-de         | 23.712 | **27.539**  | 0.411 |**0.580**  |53.03  |**95.53**  |
+| en-lv         | 20.810 | **24.990**  |0.607  |**0.724**  |52.07  |**86.86**  |
+| en-nb         | 32.682 |  **32.870** | **0.730** | 0.726  | 81.14 | **95.09**|
+| en-ro         | 37.338 | **38.591** | 0.841 | **0.879** | 81.87| **95.32** |
 
 
 The glossary accuracy does not capture
@@ -112,19 +110,28 @@ Rate the quality of the term translation:
 
 #### **English-Nowrwegian (bokmal)** ####
 Which system is better overall?
-
-WIP
+| Baseline      |  Both    | Factored Model |
+| :-----------: |:--------:| :------------: |
+|       19      |   61     |        20      |
 
 Rate the quality of the term translation:
 
-WIP
+|System| Correct |  Wrong lexeme   | Wrong inflection | Other |
+|:----:|:-------:|:---------------:|:----------------:|:-----:|
+|Baseline|  78.2 |        16.4     |       3.6       |  1.8 |
+|Fact. Model|    97.3     | 0.0 |  2.7 | 0.0 |
+
 
 #### **English-Romanian** ####
 
 Which system is better overall?
-
-WIP
+| Baseline      |  Both    | Factored Model |
+| :-----------: |:--------:| :------------: |
+|        18     |     64   |      18        |
 
 Rate the quality of the term translation:
 
-WIP
+|System| Correct |  Wrong lexeme   | Wrong inflection | Other |
+|:----:|:-------:|:---------------:|:----------------:|:-----:|
+|Baseline| 88.4  |       6.8      |     1.9         |  2.9 |
+|Fact. Model|     94.2   | 1.0 |  2.9 |  1.9 |
