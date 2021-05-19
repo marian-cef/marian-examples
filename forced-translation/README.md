@@ -66,4 +66,5 @@ After everything is ready to go just execute:
 ```
 ./run-me.sh
 ```
-This will execute the end-to-end pipeline. It will preprocess all the data, train a model, and subsequently translate the test set, forcing the terminology you provided in the glossary to appear in the translations of your test set. A brief description of the end-to-end pipeline can be found [here](docs/Pipeline.md).
+This will execute the end-to-end pipeline. It will preprocess all the data, train a model, and subsequently translate the test set, forcing the terminology you provided in the glossary to appear in the translations of your test set. The lemmatization step in the preprocessing is neural based, so even using a GPU you should expect it to take a couple of hours to run. The training will take at least 24h (depending on the hardware you have to run it).
+A brief description of the end-to-end pipeline can be found [here](docs/Pipeline.md).
