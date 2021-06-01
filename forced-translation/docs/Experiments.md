@@ -29,7 +29,7 @@ This resulted in the following data distribution (number of lines):
 | en-nb         | 12,737,978 | 2,000  | 800 |
 | en-ro         | 14,560,839 | 2,000  | 800 |
 
-If you look at both the paper and the [pipeline description](./Pipeline.md) you can see that any glossary is used during training by this method, and it only uses glossasries during the inference. 
+If you look at both the paper and the [pipeline description](./Pipeline.md) you can see that no glossary is used during training by this method, and it only uses glossasries during the inference. 
 
 For en-de and en-lv we used the [ATS](https://github.com/tilde-nlp/terminology_translation) glossaries, also used in Tilde's paper. For the en-ro language pair we used the [IATE](https://iate.europa.eu/home) generic glossary, filtered by the domains related to the content of the created testset based on europarl (Poltics, International relations, European Union, Economics, etc.). For the en-nb language pair we use a glossary from [eurotermbank](https://www.eurotermbank.com/collections/49), that has entries related to medicine, to match the EMEA based testset domain.
 
